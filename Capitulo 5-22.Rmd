@@ -1,0 +1,54 @@
+---
+title: "Capitulo 5-22"
+author: "Arnulfo Avila"
+date: "21/2/2021"
+output: html_document
+---
+
+```{r}
+
+df=read.csv("https://raw.githubusercontent.com/yirleymorales/DisenoExperimental/main/22problb.csv")
+df 
+```
+
+```{r}
+str(df)
+df$Dia=factor(df$Dia)
+df$Chofer=factor(df$Chofer)
+df$mv=factor(df$mv)
+df$Rutas=factor(df$Rutas)
+```
+
+```{r}
+modelo=aov(Y~Dia+Chofer+mv+Rutas,data=df)
+summary(modelo)
+```
+
+```{r}
+boxplot(Y~Rutas,data=df)
+
+tk=TukeyHSD(modelo)
+tk
+plot(tk)
+```
+
+```{r}
+qqnorm(modelo$residuals)
+qqline(modelo$residuals)
+shapiro.test(modelo$residuals)
+```
+
+```{r}
+library("car")
+leveneTest(Y~Rutas,data=df)
+```
+
+```{r}
+plot(modelo$residuals)
+plot(modelo$fitted.values,modelo$residuals)
+```
+
+## Conclusiones
+El costo en tiempo entre las diferentes rutas, muestra diferencias significativas solamente entre las rutas A, B y C, mientras en las rytas C y D no se observan diferencias significativas.
+Se encuentran diferencias significativas en el costo de la gasolina entre las cuatro rutas de la compañia.
+

@@ -1,0 +1,180 @@
+---
+title: "Trabajo Terminado"
+author: "Arnulfo Avila"
+date: "20/2/2021"
+output: html_document
+---
+## Capitulo 4 problema 12
+Se diseñó un experimento para estudiar el rendimiento de cuatro detergentes. Las siguientes lecturas de “blancura” se obtuvieron con un equipo especial diseñado para 12 cargas de lavado, distri buidas en tres modelos de lavadoras:
+
+## Lectura de datos
+
+```{r}
+Y=c(45,47,50,42,43,44,49,37,51,52,57,49)
+
+df=expand.grid(LETTERS[1:4],1:3)
+df$Y=Y
+df
+```
+## Enuncido: Prueba de Lavadora
+```{r}
+names(df)=c("Detergente","Lavadora","Y")
+df
+```
+
+```{r}
+str(df)
+df$Lavadora=factor(df$Lavadora)
+str(df)
+```
+## Modelo estadistico del ANOVA
+```{r}
+modelo=aov(Y~Detergente+Lavadora,data=df)
+summary(modelo)
+```
+```{r}
+boxplot(Y~Detergente,data=df)
+boxplot(Y~Lavadora,data=df)
+boxplot(Y~Detergente*Lavadora,data=df)
+```
+##Pruebas del Comparaciones Multiples: TukeyHSD
+```{r}
+tk=TukeyHSD(modelo)
+tk
+```
+## Prueba gráfica de independencia
+```{r}
+qqnorm(modelo$residuals)
+qqline(modelo$residuals)
+```
+
+Conclusión.                                                                                                                                Al realizar el diseñó experimental spudo demostrar el rendimiento de cuatro detergentes y se dio la lecturas de “blancura” también se obtuvo un equipo especial diseñado para 12 cargas de lavado, distribuidas en tres modelos de lavadoras
+
+
+
+## Capitulo 4 Problema 19
+
+## LECTURA DE DATOS
+```{r}
+df=expand.grid(1:3,1:3)
+df$Trat=c("A","B","C","B","C","A","C","A","B")
+df$Y=c(16,15,13,10,9,11,11,14,13)
+df
+```
+
+```{r}
+names(df)=c("Inspector","Escala","Trat","Y")
+df
+```
+## Factro
+```{r}
+str(df)
+df$Inspector=factor(df$Inspector)
+df$Escala=factor(df$Escala)
+df$Trat=factor(df$Trat)
+```
+## Modelo estadistico del ANOVA 
+```{r}
+modelo=aov(Y~Inspector+Escala+Trat,data=df)
+summary(modelo)
+```
+## Boxplot: visualización de los datos en escala
+```{r}
+boxplot(Y~Escala,data = df)
+boxplot(Y~Trat,data = df)
+boxplot(Y~Inspector,data = df)
+```
+##Pruebas del Comparaciones Multiples: TukeyHSD
+```{r}
+
+tk=TukeyHSD(modelo)
+tk
+plot(tk)
+```
+
+```{r}
+qqnorm(modelo$residuals)
+qqline(modelo$residuals)
+shapiro.test(modelo$residuals)
+```
+## Prueba gráfica de independencia de resuduales 
+```{r}
+plot(modelo$residuals)
+abline(h=0)
+```
+
+Conclusión: a)	¿Hay diferencias entre los proveedores? En el análisis de ANOVA , con un valor p = 0.02000 * (p < 0.05) para los proveedores, se rechaza Ho, concluyendo que hay diferencia significativa en al menos 1 proveedor. b)	¿Hay diferencias entre los inspectores y entre las escalas? En el análisis de ANOVA , con un valor p = 0.50000 para los inspectores, se acepta Ho, concluyendo que no hay diferencia significativa entre los instructores. Entre las escalas con un valor p = 0.00671 ** (p < 0.05), se rechaza Ho, concluyendo que hay diferencias significativas en al menos 1 escala. c)	Si el peso debe ser 15 g, ¿cuál proveedor es mejor? El proveedor A, es el mejor proveedor porque es el que más se acerca al peso esperado de 15g. d)	Si algún factor de bloque es no significativo, elimínelo y haga el análisis adecuado. Se elimina el factor de bloque de los inspectores, ya que se concluyó que no tiene efecto en la variable respuesta, al tener una p < 0.05 por lo tanto no hay diferencia significativa. Al hacer los análisis nuevamente se observó que las escalas y los proveedores seguían teniendo diferencia significativa, pero con un mayor grado de significancia. Nota: Es importante tomar en cuenta que los datos no cumplen con los supuestos de normalidad e independencia de la ANOVA, por lo que el estudio no es reproducible.
+
+
+## Capitulo 4 Problema 14
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Problema 14**##
+Una de las variables críticas en el proceso de ensamble del brazolector de un disco duro es el ángulo que éste forma con el cuerpo prin cipal de la cabeza lectora. Se corre un experimento con el objetivo de comparar dos equipos que miden dicho ángulo en unidades de radianes. Se decide utilizar como factor de bloque a los operadores de los equipos. Los resultados se muestran en la siguiente tabla: 
+
+## Lectura de datos
+```{r}
+Y=c(1.328,1.113,0.985,1.057,1.316,1.144,1.553,1.485,1.310,1.386,1.273,0.789,0.985,0.671,1.134,0.554,1.412,1.386,0.917,1.289,1.269,1.093,1.268,0.984,1.091,1.087,1.195,1.482,1.380,1.442,1.036,0.201,0.783,0.900,1.108,0.916,1.129,1.434,1.132,1.223,1.440,1.150,1.079,1.190,1.389,1.247,1.611,1.617,1.445,1.574,1.454,1.018,1.063,1.050,1.219,0.997,1.602,1.538,1.583,1.478)
+
+df=expand.grid(1:10,1:2,1:3)
+
+names(df)=c("Replica","Equipo","Operador")
+df$Y=Y
+df$Operador=factor(df$Operador)
+df$Equipo=factor(df$Equipo)
+```
+
+
+## Boxplot
+```{r}
+boxplot(Y~Equipo,data=df)
+boxplot(Y~Operador,data=df)
+
+boxplot(Y~Equipo*Operador,data=df)
+```
+
+
+## Conclusiones 
+1.- Cuando se evalua el analisis de varianzas (ANOVA)  se evidencia que hay diferencias significativas entre los operadores y entre los equipos ,sin embargo cuando se eavua las interaciones entre operador y equipo no muestra diferencia significativas. 2.-Cuando se visaliza a nivel del boxplot ##equipos y operador## encontramos diferencias significativasen  entre 3.1 y 2.2 y esto rechaza la hipotesis nula que dice que nohay diferencias entre los equipos. 3.-Cuando evaluamos el boxplot enetre operdores y equipos evidenciamos tambien pequeñas diferencias. 4.-Al evaluar la curva de normalidad , la mayoria de los datos sigue la normalidad , evideciados que la prueba es bastante robusta y generalmente se acepta un rango de dispersion , para cpmprobar su aceptabilida de usa la priueba de shapiro.5.- La prueba de Shapiro  usa para contrastar la normalidad de un conjunto de datos,esta dio aceptable lo que no se rechaza la hipotesis nula, - Se evidencia que hay un problema en la normalidad de los datos, cuando se evalua las graficas de los plot(modelo residual).-En la prueba de levene entre los equipos y operadores  de la prueba de homogeneidad de varianza no hay diferencias significativas .
+
+
+## CAPITULO 5 PROBLEMA 19 
+
+## Lectura de datos
+
+```{r}
+df=read.csv("Cap5-Prob 19.csv")
+df
+```
+```{r}
+str(df)
+
+```
+
+##Pruebas del Comparaciones Multiples: TukeyHSD
+```{r}
+tk=TukeyHSD(modelo)
+tk
+plot(tk)
+```
+
+```{r}
+qqnorm(modelo$residuals)
+qqline(modelo$residuals)
+shapiro.test(modelo$residuals)
+```
+
+## Prueba gráfica de independencia de resuduales
+```{r}
+plot(modelo$residuals)
+abline(h=0)
+```
+
+
+Conclusión: 
+
+Se corre un diseño factorial 3 × 2 con 10 réplicas para investigar el hinchamiento del catalizador después de la extrusión en la fabricación de botellas de polietileno de alta densidad. El catalizador se utiliza en la obtención de dicho polietileno. Los factores investigados son: molde (con dos niveles) y B: catalizador (con tres niveles). Los datos obtenidos se muestran en la siguiente tabla: a)	Plantee las hipótesis de interés en este problema y el modelo estadístico correspondiente. Ho : Efecto de Molde (A) = 0 HA : Efecto de Molde (A) ≠ 0 Ho : Efecto de Catalizador (B) = 0 HA : Efecto de Catalizador (B) ≠ 0 Estas hipótesis se prueban mediante la técnica de análisis de varianza (modelo estadístico: ANOVA), para un diseño factorial a × b con n réplicas. b)	Construya la tabla de análisis de varianza y determine cuáles efectos están activos Df Sum Sq Mean Sq F value  Pr(>F)  1. 180.27 180.27  110.89 6.79e-15, Catalizador   2 153.0376.52           47.071.02e-12, Residuals    56    91.03    1.63 Ambos efectos el molde y el catalizador están activos.
